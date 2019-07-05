@@ -41,14 +41,19 @@ void Estrategia::executar(){
 void Estrategia::seguirLinha(){
   if(refletancia.bbbb()){
     motores.frente();
+    setFrente();
   } else if(refletancia.bpbb()){
     acaoBPBB();
   } else if(refletancia.bbpb()){
     acaoBBPB();
+  } else if(refletancia.ppbb()){
+    acaoPPBB();
+  } else if(refletancia.pppp()){
+    acaoPPPP();
   }else{
-    frearUltimoMovimento();
-    refletancia.comoEstaoMeusSensores();
-    motores.pararAteBotao1();
+    //frearUltimoMovimento();
+    //refletancia.comoEstaoMeusSensores();
+    //motores.pararAteBotao1();
   }
 }
 
@@ -57,30 +62,33 @@ void Estrategia::seguirLinha(){
 void Estrategia::acaoBPBB(){
   setEsquerda();
   while(refletancia.bpbb()){
-    robo.acionarMotores(-35, 35);
-    if(refletancia.sensorMaisDir('P')){
-      robo.ligarLed(1);
-      motores.pararAteBotao1();
+    if(refletancia.ppbb()){
+      motores.parar();
+      return;
+      //motores.pararAteBotao1();
     }
+    robo.acionarMotores(-35, 35);
   }
   if(refletancia.bbbb()){
     delay(DELAY_VOLTAR_PARA_A_LINHA);
     motores.frearGiroEsq();
   }
-    //motores.girarEsq();
 }
 
 //BP
 void Estrategia::acaoBBPB(){
   setDireita();
-    while(refletancia.bbpb()){
-      robo.acionarMotores(35, -35);
+  while(refletancia.bbpb()){
+    if(refletancia.bbpp()){
+      motores.parar();
+      return;
     }
-    if(refletancia.bbbb()){
-      delay(DELAY_VOLTAR_PARA_A_LINHA);
-      motores.frearGiroDir();
-    }
-    //motores.girarDir();
+    robo.acionarMotores(35, -35);
+  }
+  if(refletancia.bbbb()){
+    delay(DELAY_VOLTAR_PARA_A_LINHA);
+    motores.frearGiroDir();
+  }
 }
 
 //PPBB
@@ -100,13 +108,24 @@ void Estrategia::acaoPPBB(){
 
 //PPPP
 void Estrategia::acaoPPPP(){
-  frearUltimoMovimento();
-  
+  motores.frear();
+  delay(300);
+  if(!refletancia.pppp()){
+    while(!refletancia.pppp()){
+      motores.frenteDevagar();
+    }
+  }
+  motores.pararPor(300);
+
   alinharComPPPP();
   
   //Olhar os Sensores de Cor
   if(acaoVerde() == false){ //Se não tiver verde
     //Realizar manobra do metodo
+    motores.frenteDevagar();
+    delay(500);
+    motores.frearDevagar();
+    motores.pararPor(1000);
     while(refletancia.sensorMaisEsq('P')){
       motores.frente();
     }
@@ -114,6 +133,9 @@ void Estrategia::acaoPPPP(){
 }
 
 void Estrategia::alinharComPPBB(){
+  
+  
+  
   if(!refletancia.bbbb()){ //Ir até todos bancos para começar o alinhamento
     boolean maisEsquerdoComecouNoPreto = false;
     boolean maisEsquerdoSaiuDoPreto = false;
@@ -224,10 +246,11 @@ void Estrategia::alinharComPPPP(){
   if(refletancia.bbbb()){
     toy.ledAlerta(2, 10, 50);
   }
-
+  /*
   while(refletancia.sensorMaisEsq('B')){
     robo.acionarMotores(-25,0);
   }
+  */
   motores.parar();
   if(refletancia.pppp()){
     toy.ledAlerta(1, 10, 50);  
@@ -237,7 +260,11 @@ void Estrategia::alinharComPPPP(){
   }
 }
 
-#define DELAY_ENTRE_SENSORES_DE_COR 150
+void Estrategia::alinharComPPBBAlternativo(){
+  motores.pararAteBotao1();
+}
+
+#define DELAY_ENTRE_SENSORES_DE_COR 130
 
 boolean Estrategia::acaoVerde(){
   motores.parar();
@@ -282,7 +309,7 @@ boolean Estrategia::acaoVerde(){
   return viuVerde;
 }
 
-#define DELAY_AVANCO_DOS_MOTORES 275 //Distancia percorrida pelos motores
+#define DELAY_AVANCO_DOS_MOTORES 285 //Distancia percorrida pelos motores
 #define DELAY_ENTRE_AVANCO_DOS_MOTORES 590
 #define DELAY_ENTRE_GIROS 50
 

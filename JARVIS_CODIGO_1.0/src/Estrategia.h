@@ -35,6 +35,7 @@ class Estrategia{
     void acaoPPPP(); //Em Construção 5
 
     void alinharComPPBB(); //Em Construção
+    void alinharComPPBBAlternativo();
     //void alinharComBBPP();
     //void alinharComPPPB();
     //void alinharComBPPP();
