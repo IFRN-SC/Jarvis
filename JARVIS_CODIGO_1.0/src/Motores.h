@@ -56,6 +56,7 @@ class Motores{
     void frenteCurva();
     void pararPor(int);
     void frearPor(int);
+    void criarFreio(int, int);
     void pararAteBotao1();
     
   private:

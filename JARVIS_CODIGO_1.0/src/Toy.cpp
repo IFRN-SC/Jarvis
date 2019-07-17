@@ -1,6 +1,7 @@
 #include "Toy.h"
 
 #define DELAY_DESLIGA_LIGA_LED 200
+#define DELAY_LEDS_ALERTA 150
 
 Toy::Toy() {
   //
@@ -96,7 +97,7 @@ void Toy::ledsAlerta(int numeroDeRepeticoes) {
     ligarLeds();
     delay(150);
     desligarLeds();
-    delay(150);
+    delay(DELAY_LEDS_ALERTA);
     cont++;
   }
 }
@@ -130,4 +131,38 @@ void Toy::ledAlerta(int numeroLed, int numeroDeRepeticoes, int tempo) {
         cont++;
       }
   }
+}
+
+void Toy::selecionarLedsAlerta(boolean estadoLed1, boolean estadoLed2, boolean estadoLed3, int quantidadeDeRepeticoes){
+  int cont = 0;
+  while (cont != quantidadeDeRepeticoes) {
+      //Desligar Leds pedidos
+      if(estadoLed1 == true){
+        robo.desligarLed(1);
+      }
+
+      if(estadoLed2 == true){
+        robo.desligarLed(2);
+      }
+
+      if(estadoLed3 == true){
+        robo.desligarLed(3);
+      }
+      delay(DELAY_LEDS_ALERTA);
+
+      //Ligar leds pedidos
+      if(estadoLed1 == true){
+        robo.ligarLed(1);
+      }
+
+      if(estadoLed2 == true){
+        robo.ligarLed(2);
+      }
+
+      if(estadoLed3 == true){
+        robo.ligarLed(3);
+      }
+      delay(DELAY_LEDS_ALERTA);
+      cont++;
+  }   
 }

@@ -37,7 +37,6 @@
 
 #include <Arduino.h>
 #include <robo_hardware2.h>
-#include <Servo.h>
 
 class Toy{
   public:
@@ -68,6 +67,10 @@ class Toy{
     
     void ledAlerta(int, int, int); //Número do Led, Quantidade de Repetições, Tempo entre cada Liga-Desliga
     //Liga e Desliga um Leds em expecifico
+
+    void selecionarLedsAlerta(boolean, boolean, boolean, int); //Estado para o Led1, Estado para o Led2, Estado para o Led3, Tempo entra cada Liga-Desliga
+    //Liga e Desliga os Leds selecionados no método
+
 };
 
 #endif

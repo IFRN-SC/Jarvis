@@ -1,15 +1,15 @@
 #include "Motores.h"
 
-#define DIFERENCA 3
+#define DIFERENCA 0
 
-#define DIR_POSITIVO 28
-#define DIR_NEGATIVO -28
+#define DIR_POSITIVO 25
+#define DIR_NEGATIVO -25
 #define ESQ_POSITIVO (DIR_POSITIVO + DIFERENCA)
 #define ESQ_NEGATIVO (DIR_NEGATIVO - DIFERENCA)
 
 
-#define DIR_POSITIVO_DEVAGAR 27
-#define DIR_NEGATIVO_DEVAGAR -27
+#define DIR_POSITIVO_DEVAGAR 20
+#define DIR_NEGATIVO_DEVAGAR -20
 #define ESQ_POSITIVO_DEVAGAR (DIR_POSITIVO_DEVAGAR + DIFERENCA)
 #define ESQ_NEGATIVO_DEVAGAR (DIR_POSITIVO_DEVAGAR - DIFERENCA)
 
@@ -29,7 +29,7 @@
 #define ESQ_NEGATIVO_FREIO (DIR_NEGATIVO_FREIO - DIFERENCA)
 
 #define DELAY_90_GRAUS 260
-#define DELAY_FREIO 43
+#define DELAY_FREIO 25
 
 #define POSITIVO_FRENTE_CURVA 25
 #define DELAY_FRENTE_CURVA 100
@@ -45,8 +45,7 @@ void Motores::parar(){robo.acionarMotores(0, 0);}
 void Motores::frear(){
   robo.acionarMotores(ESQ_NEGATIVO_FREIO, DIR_NEGATIVO_FREIO);
   delay(DELAY_FREIO);
-  parar();
-}
+  parar();} //Usa velocidade do Freio e não dos motores padrões
 void Motores::girarEsq(){robo.acionarMotores(ESQ_NEGATIVO, DIR_POSITIVO);}
 void Motores::girarDir(){robo.acionarMotores(ESQ_POSITIVO, DIR_NEGATIVO);}
 void Motores::virarEsq(){robo.acionarMotores(0, DIR_POSITIVO);}
@@ -146,6 +145,12 @@ void Motores::pararPor(int segundos){
 void Motores::frearPor(int segundos){
   frear();
   delay(segundos);
+}
+
+void Motores::criarFreio(int tempo, int forca){
+  robo.acionarMotores(forca, forca);
+  delay(tempo);
+  parar();
 }
 
 void Motores::pararAteBotao1(){
