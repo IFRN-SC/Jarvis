@@ -46,6 +46,8 @@ void Estrategia::seguirLinha(){
     acaoBBPB();
   } else if(refletancia.ppbb()){
     acaoPPBB();
+  } else if(refletancia.bbpp()){
+    acaoBBPP();
   } else if(refletancia.pppp()){
     acaoPPPP();
   }
@@ -80,23 +82,36 @@ void Estrategia::acaoBBPB(){
   while(refletancia.sensorDir('P')){
     motores.girarDir();
     setDireita();
-    if(refletancia.sensorMaisEsq('P')){
+    
+    //Verificações no momento do Giro
+    if(refletancia.bbpp()){ //PPBB desfarçado de PB
+      motores.frear(); //Para não avançar para o outro lado do preto
+      robo.ligarLed(1);
+      acaoBBPP();
+
+    } else if(refletancia.sensorMaisEsq('P')){ //Encrusilhada desfarçada de PB
       robo.ligarLed(3);
       frearUltimoMovimento();
-      motores.pararAteBotao1();
+      alinhamentoBBPB();
     }
   }
 }
 
-
-//PPBB
+//PPBB (Esquerda - 2 Sensores)
 void Estrategia::acaoPPBB(){
-  //motores.criarFreio(50, -40); //Tempo, forca
+  motores.criarFreio(50, -40); //Tempo, forca
   toy.selecionarLedsAlerta(true, true, false, 3);
   motores.pararAteBotao1();
 }
 
-//PPPP
+//BBPP (Direita - 2 Sensores)
+void Estrategia::acaoBBPP(){
+  motores.criarFreio(50, -40); //Tempo, forca
+  toy.selecionarLedsAlerta(false, true, true, 3);
+  motores.pararAteBotao1();
+}
+
+//PPPP/
 void Estrategia::acaoPPPP(){
   motores.frear();
   toy.ledsAlerta(3);
@@ -143,6 +158,45 @@ void Estrategia::alinhamentoBPBB(){ //Se acharmos uma encruzilhada enquanto PB e
 
   //Se quando voltar, o robô vê todos branco, então não tem verde e deve voltar ao seguir linha.
   //Nesse caso, ele deve encontrar PPPP ou PPBB puro (Diretamente)
+  if(refletancia.bbbb()){
+    return;
+  }
+
+  if(refletancia.bppb()){
+    while(refletancia.sensorDir('P')){
+      motores.voltarDir();
+    }
+    motores.pararPor(DELAY_INTERVALOS);
+  }
+
+  if(refletancia.pppb() || refletancia.bppp()){
+    motores.pararPor(500);
+    toy.selecionarLedsAlerta(true, false, true, 3);
+    motores.pararAteBotao1();
+  }
+
+  robo.desligarTodosLeds();
+  refletancia.comoEstaoMeusSensores();
+  motores.pararAteBotao1();
+}
+
+void Estrategia::alinhamentoBBPB(){ //Se acharmos uma encruzilhada enquanto BP entramos nesse método
+  motores.pararPor(DELAY_INTERVALOS);
+
+  //Faz o sensor mais esquerdo voltar para o branco
+  while(refletancia.sensorMaisEsq('P')){
+    motores.voltarEsq();
+  }
+  motores.pararPor(DELAY_INTERVALOS);
+
+  //Faz o sensor mais direito voltar para o branco
+  while(refletancia.sensorMaisDir('P')){
+    motores.voltarDir();
+  }
+  motores.pararPor(DELAY_INTERVALOS);
+
+  //Se quando voltar, o robô vê todos branco, então não tem verde e deve voltar ao seguir linha.
+  //Nesse caso, ele deve encontrar PPPP ou BBPP puro (Diretamente)
   if(refletancia.bbbb()){
     return;
   }

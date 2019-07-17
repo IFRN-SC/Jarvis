@@ -25,9 +25,10 @@ class Estrategia{
     SensoresDistancia distancia;
     Motores motores;
     
-    void acaoBPBB(); //Em Construção 2
-    void acaoBBPB(); //Em Construção 2
-    void acaoPPBB(); //Em Construção 5
+    void acaoBPBB();
+    void acaoBBPB();
+    void acaoPPBB();
+    void acaoBBPP(); 
     //void acaoBBPP();
     //void acaoPPPB();
     //void acaoBPPP();
@@ -35,6 +36,7 @@ class Estrategia{
     void acaoPPPP(); //Em Construção 5
 
     void alinhamentoBPBB();
+    void alinhamentoBBPB();
     void alinharComPPBB(); //Em Construção
     void alinharComPPBBAlternativo();
     //void alinharComBBPP();
