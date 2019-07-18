@@ -50,13 +50,13 @@ class Motores{
     void frearVirarDir();
     void frearVoltarEsq();
     void frearVoltarDir();
-    void frarVoltar();
+    void frearVoltar();
 
     //Movimentos Especificos
-    void frenteCurva();
     void pararPor(int);
     void frearPor(int);
     void criarFreio(int, int);
+    void mandarParaFrente(int); //Valor do Delay
     void pararAteBotao1();
     
   private:

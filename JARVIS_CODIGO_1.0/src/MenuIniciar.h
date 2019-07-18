@@ -8,7 +8,7 @@
 #include "Estrategia.h"
 #include "SensoresRefletancia.h"
 #include "SensoresCor.h"
-#include "SensoresDistancia.h"
+#include "OutrosSensores.h"
 #include "SensorIMU.h"
 
 class MenuIniciar{
@@ -25,7 +25,7 @@ class MenuIniciar{
     calibracao_dados val;
     SensoresRefletancia refletancia;
     SensoresCor cor;
-    SensoresDistancia sonar;
+    OutrosSensores outros;
     SensorIMU imu;
     Estrategia estrategia;
 };

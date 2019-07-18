@@ -150,7 +150,6 @@ class TimerThree
 	TIMSK3 = 0;
     }
     static void (*isrCallback)();
-    static void isrDefaultUnused();
 
   private:
     // properties
@@ -167,14 +166,6 @@ class TimerThree
 #define F_TIMER (F_PLL/2)
 #endif
 
-// Use only 15 bit resolution.  From K66 reference manual, 45.5.7 page 1200:
-//   The CPWM pulse width (duty cycle) is determined by 2 x (CnV - CNTIN) and the
-//   period is determined by 2 x (MOD - CNTIN). See the following figure. MOD must be
-//   kept in the range of 0x0001 to 0x7FFF because values outside this range can produce
-//   ambiguous results.
-#undef TIMER3_RESOLUTION
-#define TIMER3_RESOLUTION 32768
-
   public:
     //****************************
     //  Configuration
@@ -184,48 +175,6 @@ class TimerThree
     }
     void setPeriod(unsigned long microseconds) __attribute__((always_inline)) {
 	const unsigned long cycles = (F_TIMER / 2000000) * microseconds;
-
-  /*
-  // This code does not work properly in all cases :(
-  // https://github.com/PaulStoffregen/TimerOne/issues/17 
-  if (cycles < TIMER3_RESOLUTION * 16) {
-    if (cycles < TIMER3_RESOLUTION * 4) {
-      if (cycles < TIMER3_RESOLUTION) {
-        clockSelectBits = 0;
-        pwmPeriod = cycles;
-      }else{
-        clockSelectBits = 1;
-        pwmPeriod = cycles >> 1;
-      }
-    }else{
-      if (cycles < TIMER3_RESOLUTION * 8) {
-        clockSelectBits = 3;
-        pwmPeriod = cycles >> 3;
-      }else{
-        clockSelectBits = 4;
-        pwmPeriod = cycles >> 4;
-      }
-    }
-  }else{
-    if (cycles > TIMER3_RESOLUTION * 64) {
-      if (cycles > TIMER3_RESOLUTION * 128) {
-        clockSelectBits = 7;
-        pwmPeriod = TIMER3_RESOLUTION - 1;
-      }else{
-        clockSelectBits = 7;
-        pwmPeriod = cycles >> 7;
-      }
-    }else{
-      if (cycles > TIMER3_RESOLUTION * 32) {
-        clockSelectBits = 6;
-        pwmPeriod = cycles >> 6;
-      }else{
-        clockSelectBits = 5;
-        pwmPeriod = cycles >> 5;
-      }
-    }
-  }
-  */
 	if (cycles < TIMER3_RESOLUTION) {
 		clockSelectBits = 0;
 		pwmPeriod = cycles;
@@ -261,7 +210,6 @@ class TimerThree
 		clockSelectBits = 7;
 		pwmPeriod = TIMER3_RESOLUTION - 1;
 	}
-
 	uint32_t sc = FTM2_SC;
 	FTM2_SC = 0;
 	FTM2_MOD = pwmPeriod;
@@ -283,7 +231,7 @@ class TimerThree
 	start();
     }
     void resume() __attribute__((always_inline)) {
-	FTM2_SC = (FTM2_SC & (FTM_SC_TOIE | FTM_SC_PS(7))) | FTM_SC_CPWMS | FTM_SC_CLKS(1);
+	FTM2_SC = (FTM1_SC & (FTM_SC_TOIE | FTM_SC_PS(7))) | FTM_SC_CPWMS | FTM_SC_CLKS(1);
     }
 
     //****************************
@@ -336,7 +284,6 @@ class TimerThree
 	NVIC_DISABLE_IRQ(IRQ_FTM2);
     }
     static void (*isrCallback)();
-    static void isrDefaultUnused();
 
   private:
     // properties

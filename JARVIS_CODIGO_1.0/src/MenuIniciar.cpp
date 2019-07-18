@@ -113,7 +113,7 @@ void MenuIniciar::menuSerial(){
         Serial.println(F("\nEntrando em Loop para ver os Sensores de Distancia..."));
         Serial.println(F("(Digite -1 para sair da Repetição)\n"));
         while(Serial.parseInt() != -1){
-          sonar.printSensoresDeDistancia();
+          outros.printSensoresDeDistancia();
           delay(500);
         } 
         naoImprimir = false;

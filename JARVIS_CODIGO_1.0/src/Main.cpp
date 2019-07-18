@@ -8,6 +8,8 @@ MenuIniciar menuIniciar;
 Estrategia estrategia;
 Calibragem calibragem;
 
+void contagem();
+
 void setup() {
   Serial.begin(9600);
   robo.configurar(false);

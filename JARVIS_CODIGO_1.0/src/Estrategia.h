@@ -7,8 +7,8 @@
 #include "Calibragem.h"
 #include "SensoresRefletancia.h"
 #include "SensoresCor.h"
-#include "SensoresDistancia.h"
 #include "Motores.h"
+#include "OutrosSensores.h"
 
 class Estrategia{
   public:
@@ -22,9 +22,12 @@ class Estrategia{
     Toy toy;
     SensoresRefletancia refletancia;
     SensoresCor cor;
-    SensoresDistancia distancia;
     Motores motores;
+    OutrosSensores outrosSensores;
     
+    int numeroDeViradinhas;
+    void corrigirViradinha();
+
     void acaoBPBB();
     void acaoBBPB();
     void acaoPPBB();
@@ -33,7 +36,13 @@ class Estrategia{
     //void acaoPPPB();
     //void acaoBPPP();
     //void acaoBPPB();
-    void acaoPPPP(); //Em Construção 5
+    void acaoPPPP(boolean); //Em Construção 5
+
+    //Métodos de Verificação do Verde
+    boolean verificarVerdeParado();
+    boolean vaiVerificaVerdeVolta();
+    boolean miniVaiVerificaVerdeVolta();
+    boolean avancarVerificarVerde(int);
 
     void alinhamentoBPBB();
     void alinhamentoBBPB();

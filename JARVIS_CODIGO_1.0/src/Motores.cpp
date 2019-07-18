@@ -125,18 +125,13 @@ void Motores::frearVoltarDir(){
   delay(DELAY_FREIO);
   parar();
 }
-void Motores::frarVoltar(){
+void Motores::frearVoltar(){
   robo.acionarMotores(ESQ_POSITIVO_FREIO, DIR_POSITIVO_FREIO);
   delay(DELAY_FREIO);
   parar();
 }
 
 //Movimentos Especificos
-void Motores::frenteCurva(){
-  robo.acionarMotores(POSITIVO_FRENTE_CURVA, POSITIVO_FRENTE_CURVA);
-  delay(DELAY_FRENTE_CURVA);
-}
-
 void Motores::pararPor(int segundos){
   parar();
   delay(segundos);
@@ -150,6 +145,12 @@ void Motores::frearPor(int segundos){
 void Motores::criarFreio(int tempo, int forca){
   robo.acionarMotores(forca, forca);
   delay(tempo);
+  parar();
+}
+
+void Motores::mandarParaFrente(int tempoDelay){
+  frente();
+  delay(tempoDelay);
   parar();
 }
 

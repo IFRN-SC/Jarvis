@@ -1,30 +1,30 @@
-#ifndef SENSORESDISTANCIA_H
-#define SENSORESDISTANCIA_H
+#ifndef OUTROSSENSORES_H
+#define OUTROSSENSORES_H
 
 #include <robo_hardware2.h>
+#include <TimerThree.h>
 #include <Servo.h>
 #include <Wire.h>
 
-#include "Motores.h"
-#include "SensoresRefletancia.h"
-#include "SensoresDistancia.h"
-
-class SensoresDistancia{
+class OutrosSensores{
   public:
-    SensoresDistancia();
+    OutrosSensores();
+
     boolean verificarObstaculo();
+    
+    void beginTimer();
+    void startTimer();
+    void stopTimer();
+    void zerarContador();
+
     void printSensoresDeDistancia();
 
   private:
-    Motores motores;
-    SensoresRefletancia refletancia;
+    boolean beginTimerJaAconteceu;
 
     float valorSensorFrontal;
     float valorSensorLateralEsq;
     float valorSensorLateralDir;
-      
 };
 
 #endif
-
-
